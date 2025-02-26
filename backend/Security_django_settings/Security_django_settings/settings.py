@@ -51,6 +51,10 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),    #тривалість токена оновлення
 }
 
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:8081", #саідкуєтсья тільки по заданому ip
+]
+
 
 ROOT_URLCONF = 'Security_django_settings.urls'
 
