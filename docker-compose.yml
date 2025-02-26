@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./backend/Security_django_settings
+    container_name: django_backend
+    volumes:
+      - ./backend/Security_django_settings:/app
+      - ./backend/Security_django_settings/db.sqlite3:/app/db.sqlite3  # Збереження SQLite
+    ports:
+      - "8000:8000"
+    command: gunicorn Security_django_settings.wsgi:application --bind 0.0.0.0:8000
+
+  frontend:
+    build: ./frontend/my-vue-project
+    container_name: vue_frontend
+    volumes:
+      - ./frontend/my-vue-project:/app
+      - /app/node_modules
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+    command: npm run serve
+
+  nginx:
+    build: ./nginx
+    container_name: nginx_proxy
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+      - frontend
